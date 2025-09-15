@@ -169,6 +169,19 @@
                     android:progressBackgroundTint="#E0E0E0"
                     android:indeterminate="false" />
 
+                <Button
+                    android:id="@+id/buttonLogout"
+                    android:layout_width="316dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:text="🚪
+Выйти"
+                    android:textAllCaps="false"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>

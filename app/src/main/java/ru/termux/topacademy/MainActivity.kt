@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var textViewScheduleDate: TextView
     private lateinit var linearLayoutSchedule: LinearLayout
     private lateinit var buttonProfile: Button
-    private lateinit var buttonLogout: Button
+//    private lateinit var buttonLogout: Button
     private lateinit var buttonAttendance: Button
     private lateinit var buttonYesterday: Button
     private lateinit var buttonToday: Button
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         textViewScheduleDate = findViewById(R.id.textViewScheduleDate)
         linearLayoutSchedule = findViewById(R.id.linearLayoutSchedule)
         buttonProfile = findViewById(R.id.buttonProfile)
-        buttonLogout = findViewById(R.id.buttonLogout)
+//        buttonLogout = findViewById(R.id.buttonLogout)
         buttonAttendance = findViewById(R.id.buttonAttendance)
         buttonYesterday = findViewById(R.id.buttonYesterday)
         buttonToday = findViewById(R.id.buttonToday)
@@ -84,11 +84,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, MarketActivity::class.java))
         }
 
-        buttonLogout.setOnClickListener {
-            prefs.clear()
-            Toast.makeText(this, "🚪 Вы вышли из аккаунта", Toast.LENGTH_SHORT).show()
-            navigateToLogin()
-        }
+//        buttonLogout.setOnClickListener {
+//            prefs.clear()
+//            Toast.makeText(this, "🚪 Вы вышли из аккаунта", Toast.LENGTH_SHORT).show()
+//            navigateToLogin()
+//        }
 
         // Обработчики для кнопок даты
         buttonYesterday.setOnClickListener {

@@ -1,7 +1,9 @@
 package ru.termux.topacademy
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -15,12 +17,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
 
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var prefs: SharedPreferencesHelper
-    private lateinit var retrofit: Retrofit
     private lateinit var profileService: ProfileService
 
     private lateinit var imageViewProfilePhoto: ImageView
@@ -33,15 +33,17 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var textViewSocials: TextView
     private lateinit var textViewFillPercentage: TextView
     private lateinit var progressBarProfile: ProgressBar
+    private lateinit var buttonLogout: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
         prefs = SharedPreferencesHelper(this)
-        retrofit = ApiClient.provideRetrofit(prefs)
+        val retrofit = ApiClient.provideRetrofit(prefs)
         profileService = retrofit.create(ProfileService::class.java)
 
+        // Инициализация View
         imageViewProfilePhoto = findViewById(R.id.imageViewProfilePhoto)
         textViewFullName = findViewById(R.id.textViewFullName)
         textViewEmail = findViewById(R.id.textViewEmail)
@@ -52,6 +54,14 @@ class ProfileActivity : AppCompatActivity() {
         textViewSocials = findViewById(R.id.textViewSocials)
         textViewFillPercentage = findViewById(R.id.textViewFillPercentage)
         progressBarProfile = findViewById(R.id.progressBarProfile)
+        buttonLogout = findViewById(R.id.buttonLogout)
+
+        // Установка обработчика нажатия — ИСПРАВЛЕНО: внутри onCreate
+        buttonLogout.setOnClickListener {
+            prefs.clear()
+            Toast.makeText(this, "🚪 Вы вышли из аккаунта", Toast.LENGTH_SHORT).show()
+            navigateToLogin()
+        }
 
         loadProfile()
     }
@@ -112,5 +122,13 @@ class ProfileActivity : AppCompatActivity() {
                 .error(android.R.drawable.stat_notify_error)
                 .into(imageViewProfilePhoto)
         }
+    }
+
+    private fun navigateToLogin() {
+        // Переход на экран логина и очистка стека активностей
+        val intent = Intent(this, LoginActivity::class.java) // ← Замените на вашу LoginActivity, если имя отличается
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 }
