@@ -1,56 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="24dp"
+    android:paddingHorizontal="24dp"
+    android:paddingVertical="48dp"
+    android:background="@color/white"
     android:gravity="center">
 
+    <!-- Заголовок -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Вход в Top Academy"
-        android:textSize="24sp"
-        android:layout_marginBottom="32dp" />
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:fontFamily="sans-serif-medium"
+        android:layout_marginBottom="40dp" />
 
+    <!-- Поле Логин -->
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Логин">
+        android:hint="Логин или email"
+        app:hintTextColor="#555555"
+        app:boxBackgroundColor="#FFFFFF"
+        app:boxStrokeColor="#DDDDDD"
+        app:boxStrokeWidth="1dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusBottomEnd="12dp"
+        android:textColorHint="#555555">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextUsername"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:inputType="textEmailAddress" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Поле Пароль -->
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Пароль"
-        android:layout_marginTop="16dp">
+        app:hintTextColor="#555555"
+        app:boxBackgroundColor="#FFFFFF"
+        app:boxStrokeColor="#DDDDDD"
+        app:boxStrokeWidth="1dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:endIconMode="password_toggle"
+        android:layout_marginTop="16dp"
+        android:textColorHint="#555555">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="#000000"
             android:inputType="textPassword" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <!-- Кнопка входа -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonLogin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:text="Войти"
-        android:layout_marginTop="32dp" />
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="32dp"
+        app:cornerRadius="12dp"
+        app:backgroundTint="#4CAF50"
+        app:elevation="6dp"
+        app:rippleColor="#388E3C" />
 
+    <!-- Прогресс-бар -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:visibility="gone" />
+        android:layout_marginTop="24dp"
+        android:visibility="gone"
+        android:indeterminateTint="#4CAF50" />
 
 </LinearLayout>

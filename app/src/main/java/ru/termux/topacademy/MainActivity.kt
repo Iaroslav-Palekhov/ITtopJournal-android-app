@@ -28,17 +28,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var scheduleService: ScheduleService
 
     private lateinit var textViewGreeting: TextView
-    private lateinit var textViewScheduleDate: TextView // <-- НОВЫЙ TextView для отображения текущей даты
+    private lateinit var textViewScheduleDate: TextView
     private lateinit var linearLayoutSchedule: LinearLayout
     private lateinit var buttonProfile: Button
     private lateinit var buttonLogout: Button
-    private lateinit var buttonAttendance: Button // <-- Кнопка для посещаемости
-    private lateinit var buttonYesterday: Button // <-- Кнопка "Вчера"
-    private lateinit var buttonToday: Button // <-- Кнопка "Сегодня"
-    private lateinit var buttonTomorrow: Button // <-- Кнопка "Завтра"
+    private lateinit var buttonAttendance: Button
+    private lateinit var buttonYesterday: Button
+    private lateinit var buttonToday: Button
+    private lateinit var buttonTomorrow: Button
     private lateinit var progressBarMain: ProgressBar
 
-    private var currentDate: Calendar = Calendar.getInstance() // <-- Текущая выбранная дата
+    private lateinit var buttonMarket: Button
+
+    private var currentDate: Calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,15 +58,16 @@ class MainActivity : AppCompatActivity() {
 
         // Инициализация View
         textViewGreeting = findViewById(R.id.textViewGreeting)
-        textViewScheduleDate = findViewById(R.id.textViewScheduleDate) // <-- Инициализация
+        textViewScheduleDate = findViewById(R.id.textViewScheduleDate)
         linearLayoutSchedule = findViewById(R.id.linearLayoutSchedule)
         buttonProfile = findViewById(R.id.buttonProfile)
         buttonLogout = findViewById(R.id.buttonLogout)
-        buttonAttendance = findViewById(R.id.buttonAttendance) // <-- Инициализация
-        buttonYesterday = findViewById(R.id.buttonYesterday) // <-- Инициализация
-        buttonToday = findViewById(R.id.buttonToday) // <-- Инициализация
-        buttonTomorrow = findViewById(R.id.buttonTomorrow) // <-- Инициализация
+        buttonAttendance = findViewById(R.id.buttonAttendance)
+        buttonYesterday = findViewById(R.id.buttonYesterday)
+        buttonToday = findViewById(R.id.buttonToday)
+        buttonTomorrow = findViewById(R.id.buttonTomorrow)
         progressBarMain = findViewById(R.id.progressBarMain)
+        buttonMarket = findViewById(R.id.buttonMarket)
 
         textViewGreeting.text = "Привет, ${prefs.username ?: "Пользователь"}!"
 
@@ -75,6 +78,10 @@ class MainActivity : AppCompatActivity() {
 
         buttonAttendance.setOnClickListener {
             startActivity(Intent(this, AttendanceActivity::class.java))
+        }
+
+        buttonMarket.setOnClickListener {
+            startActivity(Intent(this, MarketActivity::class.java))
         }
 
         buttonLogout.setOnClickListener {
@@ -113,26 +120,29 @@ class MainActivity : AppCompatActivity() {
         textViewScheduleDate.text = "📅 Расписание на $displayDate"
     }
 
-    // Вспомогательная функция для "человеческого" отображения даты (аналог Python-функции)
     private fun getHumanReadableDate(dateStr: String): String {
         return try {
-            val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(dateStr)?.let { Calendar.getInstance().apply { time = it } }
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val date = inputFormat.parse(dateStr) ?: return dateStr
+            val calendarDate = Calendar.getInstance().apply { time = date }
             val today = Calendar.getInstance()
             val yesterday = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, -1) }
             val tomorrow = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, 1) }
 
             when {
-                date?.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
-                        date.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) -> "сегодня"
-                date?.get(Calendar.YEAR) == yesterday.get(Calendar.YEAR) &&
-                        date.get(Calendar.DAY_OF_YEAR) == yesterday.get(Calendar.DAY_OF_YEAR) -> "вчера"
-                date?.get(Calendar.YEAR) == tomorrow.get(Calendar.YEAR) &&
-                        date.get(Calendar.DAY_OF_YEAR) == tomorrow.get(Calendar.DAY_OF_YEAR) -> "завтра"
+                isSameDay(calendarDate, today) -> "сегодня"
+                isSameDay(calendarDate, yesterday) -> "вчера"
+                isSameDay(calendarDate, tomorrow) -> "завтра"
                 else -> dateStr
             }
         } catch (e: Exception) {
             dateStr
         }
+    }
+
+    private fun isSameDay(cal1: Calendar, cal2: Calendar): Boolean {
+        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
     }
 
     private fun loadScheduleForDate() {
@@ -148,32 +158,51 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = scheduleService.getScheduleByDate(date)
+
                 withContext(Dispatchers.Main) {
                     progressBarMain.visibility = View.GONE
-                    if (response.isSuccessful) {
-                        val schedule = response.body() ?: emptyList()
-                        if (schedule.isEmpty()) {
-                            addScheduleItemView("На этот день занятий нет.", "", "", "", "", "")
-                        } else {
-                            for (item in schedule) {
+
+                    when {
+                        response.isSuccessful -> {
+                            val schedule = response.body() ?: emptyList()
+                            if (schedule.isEmpty()) {
                                 addScheduleItemView(
-                                    item.subject_name ?: "Предмет неизвестен",
-                                    item.started_at ?: "--:--",
-                                    item.finished_at ?: "--:--",
-                                    item.teacher_name ?: "",
-                                    item.room_name ?: "",
-                                    item.lesson?.toString() ?: "?"
+                                    subject = "На этот день занятий нет.",
+                                    start = "",
+                                    end = "",
+                                    teacher = "",
+                                    room = "",
+                                    lessonNum = ""
                                 )
+                            } else {
+                                schedule.forEach { item ->
+                                    addScheduleItemView(
+                                        subject = item.subject_name ?: "Предмет неизвестен",
+                                        start = item.started_at ?: "--:--",
+                                        end = item.finished_at ?: "--:--",
+                                        teacher = item.teacher_name ?: "",
+                                        room = item.room_name ?: "",
+                                        lessonNum = item.lesson?.toString() ?: "?"
+                                    )
+                                }
                             }
                         }
-                    } else {
-                        Toast.makeText(this@MainActivity, "❌ Ошибка загрузки расписания", Toast.LENGTH_SHORT).show()
+                        response.code() == 401 -> {
+                            handleUnauthorized()
+                        }
+                        else -> {
+                            Toast.makeText(
+                                this@MainActivity,
+                                "❌ Ошибка сервера: ${response.code()}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     progressBarMain.visibility = View.GONE
-                    Toast.makeText(this@MainActivity, "⚠️ ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MainActivity, "⚠️ Ошибка сети: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -192,20 +221,31 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val lessonView = TextView(this).apply {
-            text = "$lessonNum️⃣ $subject"
-            textSize = 16f
-            setTextColor(getColor(android.R.color.black))
+        if (lessonNum.isNotEmpty() && subject != "На этот день занятий нет.") {
+            val lessonView = TextView(this).apply {
+                text = "$lessonNum️⃣ $subject"
+                textSize = 16f
+                setTextColor(getColor(android.R.color.black))
+            }
+            container.addView(lessonView)
+        } else {
+            val lessonView = TextView(this).apply {
+                text = subject
+                textSize = 16f
+                setTextColor(getColor(android.R.color.black))
+                setTypeface(null, android.graphics.Typeface.BOLD)
+            }
+            container.addView(lessonView)
         }
 
-        val timeView = TextView(this).apply {
-            text = "🕒 $start – $end"
-            textSize = 14f
-            setTextColor(getColor(android.R.color.darker_gray))
+        if (start.isNotEmpty() && end.isNotEmpty()) {
+            val timeView = TextView(this).apply {
+                text = "🕒 $start – $end"
+                textSize = 14f
+                setTextColor(getColor(android.R.color.darker_gray))
+            }
+            container.addView(timeView)
         }
-
-        container.addView(lessonView)
-        container.addView(timeView)
 
         if (teacher.isNotEmpty()) {
             val teacherView = TextView(this).apply {
@@ -226,6 +266,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         linearLayoutSchedule.addView(container)
+    }
+
+    private fun handleUnauthorized() {
+        Toast.makeText(this, "⚠️ Сессия истекла. Пожалуйста, войдите снова.", Toast.LENGTH_LONG).show()
+        prefs.clear()
+        navigateToLogin()
     }
 
     private fun navigateToLogin() {

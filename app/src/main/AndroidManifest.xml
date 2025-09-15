@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Topacademy">
         <activity
+            android:name=".MarketActivity"
+            android:exported="false" />
+        <activity
             android:name=".AttendanceActivity"
             android:exported="false" />
         <activity

@@ -3,15 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#F5F5F5">
 
+    <!-- Приветствие -->
     <TextView
         android:id="@+id/textViewGreeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="24dp"
         android:text="Привет, Пользователь!"
-        android:textSize="20sp"
-        android:layout_marginBottom="16dp" />
+        android:textSize="22sp"
+        android:textColor="#333333"
+        android:fontFamily="sans-serif-medium" />
 
     <!-- Панель управления датой -->
     <LinearLayout
@@ -19,15 +25,22 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="20dp"
+        android:background="#FFFFFF"
+        android:padding="8dp"
+        android:radius="12dp"
+        android:elevation="4dp">
 
         <Button
             android:id="@+id/buttonYesterday"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="⏪ Вчера"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="8dp"
+            android:textColor="#555555"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonToday"
@@ -36,67 +49,129 @@
             android:layout_weight="1"
             android:text="📌 Сегодня"
             android:layout_marginEnd="8dp"
-            android:backgroundTint="#4CAF50" />
+            android:backgroundTint="#4CAF50"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/buttonTomorrow"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="⏩ Завтра" />
+            android:text="⏩ Завтра"
+            android:textColor="#555555"
+            android:textAllCaps="false" />
 
     </LinearLayout>
 
+    <!-- Заголовок расписания -->
     <TextView
         android:id="@+id/textViewScheduleDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="📅 Расписание на сегодня"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginBottom="8dp" />
+        android:textColor="#212121"
+        android:layout_marginBottom="12dp"
+        android:layout_gravity="center_horizontal" />
 
+    <!-- Прокручиваемая область расписания -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_marginBottom="16dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:clipToPadding="false"
+        android:contentDescription="@string/app_name"
+        android:elevation="2dp"
+        android:padding="12dp">
+
         <LinearLayout
             android:id="@+id/linearLayoutSchedule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="8dp">
             <!-- Расписание будет добавляться сюда динамически -->
         </LinearLayout>
+
     </ScrollView>
 
-    <Button
-        android:id="@+id/buttonAttendance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="📋 Посещаемость и оценки"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="#FF9800" />
-
-    <Button
-        android:id="@+id/buttonProfile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="👤 Мой Профиль"
-        android:layout_marginTop="8dp" />
-
-    <Button
-        android:id="@+id/buttonLogout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="🚪 Выйти"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="#F44336" />
-
+    <!-- Индикатор загрузки -->
     <ProgressBar
         android:id="@+id/progressBarMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:layout_marginBottom="16dp"
+        android:indeterminateTint="#4CAF50" />
+
+    <!-- Нижняя панель навигации — НАСТОЯЩИЕ КНОПКИ с эмодзи и подписями -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#FFFFFF"
+        android:elevation="8dp"
+        android:padding="12dp">
+
+        <Button
+            android:id="@+id/buttonAttendance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="📊
+Посещаемость"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:background="?attr/selectableItemBackground"
+            android:textAllCaps="false"
+            android:textColor="#333333" />
+
+        <Button
+            android:id="@+id/buttonProfile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="👤
+Профиль"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:background="?attr/selectableItemBackground"
+            android:textAllCaps="false"
+            android:textColor="#333333" />
+
+
+        <Button
+            android:id="@+id/buttonMarket"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="🛍️
+Маркет"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:background="?attr/selectableItemBackground"
+            android:textAllCaps="false"
+            android:textColor="#333333" />
+
+        <Button
+            android:id="@+id/buttonLogout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="🚪
+Выйти"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:background="?attr/selectableItemBackground"
+            android:textAllCaps="false"
+            android:textColor="#333333" />
+
+    </LinearLayout>
 
 </LinearLayout>
