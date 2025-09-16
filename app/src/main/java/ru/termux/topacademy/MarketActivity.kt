@@ -3,7 +3,9 @@ package ru.termux.topacademy
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
-import android.widget.TextView
+import retrofit2.Response
 
 class MarketActivity : AppCompatActivity() {
 
@@ -40,11 +42,16 @@ class MarketActivity : AppCompatActivity() {
         recyclerViewMarket = findViewById(R.id.recyclerViewMarket)
         progressBarMarket = findViewById(R.id.progressBarMarket)
 
+        // Инициализация адаптера с лямбдой для обработки покупки
+        marketAdapter = MarketAdapter(emptyList()) { selectedItem ->
+            purchaseItem(selectedItem)
+        }
+
         // Настройка RecyclerView
-        marketAdapter = MarketAdapter(emptyList())
         recyclerViewMarket.layoutManager = LinearLayoutManager(this)
         recyclerViewMarket.adapter = marketAdapter
 
+        // Загружаем все товары
         loadMarketItems()
     }
 
@@ -68,16 +75,14 @@ class MarketActivity : AppCompatActivity() {
                     val marketResponse = response.body()
                     val currentPageItems = marketResponse?.products_list.orEmpty()
 
-                    // Если на текущей странице есть товары, добавляем их
                     if (currentPageItems.isNotEmpty()) {
                         allItems.addAll(currentPageItems)
-                        currentPage++ // Переходим к следующей странице
+                        currentPage++
                     } else {
-                        // Если список пуст, значит, больше товаров нет
                         hasMoreItems = false
                     }
 
-                    // Дополнительная защита от бесконечного цикла
+                    // Защита от бесконечного цикла
                     if (currentPage > 100) {
                         hasMoreItems = false
                     }
@@ -90,7 +95,49 @@ class MarketActivity : AppCompatActivity() {
                         Toast.makeText(this@MarketActivity, "📭 Товары в маркете отсутствуют", Toast.LENGTH_SHORT).show()
                     }
                 }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    progressBarMarket.visibility = View.GONE
+                    Toast.makeText(this@MarketActivity, "⚠️ Ошибка сети: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
 
+    private fun purchaseItem(item: MarketItem) {
+        progressBarMarket.visibility = View.VISIBLE
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                // Создаем тело запроса в формате, ожидаемом сервером
+                val purchaseRequest = PurchaseRequest(
+                    cart = Cart(
+                        cart_items = listOf(
+                            CartItem(
+                                id = item.id, // ID товара
+                                count = 1     // Количество
+                            )
+                        )
+                    )
+                )
+
+                // Выполняем запрос на покупку
+                val response = marketService.purchaseProduct(purchaseRequest)
+
+                withContext(Dispatchers.Main) {
+                    progressBarMarket.visibility = View.GONE
+                    if (response.isSuccessful) {
+                        Toast.makeText(this@MarketActivity, "✅ Товар \"${item.title}\" успешно куплен!", Toast.LENGTH_LONG).show()
+                        loadMarketItems() // Обновляем список товаров
+                    } else {
+                        // Более точное сообщение об ошибке
+                        val errorMessage = when (response.code()) {
+                            400 -> "❌ Неверный формат запроса. Обратитесь к разработчику."
+                            401 -> "❌ Сессия истекла. Войдите снова."
+                            else -> "❌ Ошибка покупки: ${response.code()}"
+                        }
+                        Toast.makeText(this@MarketActivity, errorMessage, Toast.LENGTH_LONG).show()
+                    }
+                }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     progressBarMarket.visibility = View.GONE
@@ -101,9 +148,31 @@ class MarketActivity : AppCompatActivity() {
     }
 }
 
-// Адаптер для RecyclerView
-class MarketAdapter(private var items: List<MarketItem>) :
-    RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
+// --- Модели данных для запроса на покупку ---
+
+// Основная модель запроса
+data class PurchaseRequest(
+    val cart: Cart
+)
+
+// Модель корзины
+data class Cart(
+    val notes: String? = null,
+    val cart_items: List<CartItem>
+)
+
+// Модель элемента корзины
+data class CartItem(
+    val id: Int,
+    val count: Int
+)
+
+// --- Адаптер для RecyclerView ---
+
+class MarketAdapter(
+    private var items: List<MarketItem>,
+    private val onBuyClickListener: (MarketItem) -> Unit
+) : RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
 
     fun updateItems(newItems: List<MarketItem>) {
         this.items = newItems
@@ -116,7 +185,7 @@ class MarketAdapter(private var items: List<MarketItem>) :
     }
 
     override fun onBindViewHolder(holder: MarketViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(items[position], onBuyClickListener)
     }
 
     override fun getItemCount() = items.size
@@ -127,32 +196,36 @@ class MarketAdapter(private var items: List<MarketItem>) :
         private val textViewDescription = itemView.findViewById<TextView>(R.id.textViewDescription)
         private val textViewPrice = itemView.findViewById<TextView>(R.id.textViewPrice)
         private val textViewQuantity = itemView.findViewById<TextView>(R.id.textViewQuantity)
+        private val buttonBuy = itemView.findViewById<Button>(R.id.buttonBuy)
 
-        fun bind(item: MarketItem) {
+        fun bind(item: MarketItem, onBuyClick: (MarketItem) -> Unit) {
             textViewTitle.text = item.title
             textViewDescription.text = item.description
 
-            // Получаем стоимость в баллах (берем первый тип, если есть)
             val priceText = item.prices?.firstOrNull()?.points_sum?.let { "$it баллов" } ?: "Цена не указана"
             textViewPrice.text = priceText
-
             textViewQuantity.text = "В наличии: ${item.quantity}"
 
-            // Загружаем изображение с помощью Glide
             val imageUrl = item.file_name?.trim()
             if (!imageUrl.isNullOrEmpty()) {
-                Glide.with(itemView.context)                    .load(imageUrl)
+                Glide.with(itemView.context)
+                    .load(imageUrl)
                     .placeholder(android.R.drawable.ic_menu_gallery)
                     .error(android.R.drawable.stat_notify_error)
                     .into(imageViewProduct)
             } else {
                 imageViewProduct.setImageResource(android.R.drawable.ic_menu_gallery)
             }
+
+            buttonBuy.setOnClickListener {
+                onBuyClick(item)
+            }
         }
     }
 }
 
-// Extension function для удобного инфлейта
+// --- Вспомогательная функция ---
+
 fun ViewGroup.inflate(layoutRes: Int, attachToRoot: Boolean = false): View {
     return android.view.LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 }
