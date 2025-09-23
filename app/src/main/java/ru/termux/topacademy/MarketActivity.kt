@@ -105,46 +105,64 @@ class MarketActivity : AppCompatActivity() {
     }
 
     private fun purchaseItem(item: MarketItem) {
-        progressBarMarket.visibility = View.VISIBLE
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                // Создаем тело запроса в формате, ожидаемом сервером
-                val purchaseRequest = PurchaseRequest(
-                    cart = Cart(
-                        cart_items = listOf(
-                            CartItem(
-                                id = item.id, // ID товара
-                                count = 1     // Количество
+        // Создаем AlertDialog для подтверждения покупки
+        val builder = android.app.AlertDialog.Builder(this)
+        builder.setTitle("Подтверждение покупки")
+        builder.setMessage("Вы уверены, что хотите купить:\n\n\"${item.title}\" за ${item.prices?.firstOrNull()?.points_sum ?: "неизвестно"} Топкоинов?")
+
+        builder.setPositiveButton("✅ Подтвердить") { dialog, _ ->
+            dialog.dismiss()
+            // Начинаем покупку только после подтверждения
+            progressBarMarket.visibility = View.VISIBLE
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    // Создаем тело запроса в формате, ожидаемом сервером
+                    val purchaseRequest = PurchaseRequest(
+                        cart = Cart(
+                            cart_items = listOf(
+                                CartItem(
+                                    id = item.id, // ID товара
+                                    count = 1     // Количество
+                                )
                             )
                         )
                     )
-                )
 
-                // Выполняем запрос на покупку
-                val response = marketService.purchaseProduct(purchaseRequest)
+                    // Выполняем запрос на покупку
+                    val response = marketService.purchaseProduct(purchaseRequest)
 
-                withContext(Dispatchers.Main) {
-                    progressBarMarket.visibility = View.GONE
-                    if (response.isSuccessful) {
-                        Toast.makeText(this@MarketActivity, "✅ Товар \"${item.title}\" успешно куплен!", Toast.LENGTH_LONG).show()
-                        loadMarketItems() // Обновляем список товаров
-                    } else {
-                        // Более точное сообщение об ошибке
-                        val errorMessage = when (response.code()) {
-                            400 -> "❌ Неверный формат запроса. Обратитесь к разработчику."
-                            401 -> "❌ Сессия истекла. Войдите снова."
-                            else -> "❌ Ошибка покупки: ${response.code()}"
+                    withContext(Dispatchers.Main) {
+                        progressBarMarket.visibility = View.GONE
+                        if (response.isSuccessful) {
+                            Toast.makeText(this@MarketActivity, "✅ Товар \"${item.title}\" успешно куплен!", Toast.LENGTH_LONG).show()
+                            loadMarketItems() // Обновляем список товаров
+                        } else {
+                            // Более точное сообщение об ошибке
+                            val errorMessage = when (response.code()) {
+                                400 -> "❌ Неверный формат запроса. Обратитесь к разработчику."
+                                401 -> "❌ Сессия истекла. Войдите снова."
+                                422 -> "❌ Недостаточно топкоинов."
+                                else -> "❌ Ошибка покупки: ${response.code()}"
+                            }
+                            Toast.makeText(this@MarketActivity, errorMessage, Toast.LENGTH_LONG).show()
                         }
-                        Toast.makeText(this@MarketActivity, errorMessage, Toast.LENGTH_LONG).show()
                     }
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    progressBarMarket.visibility = View.GONE
-                    Toast.makeText(this@MarketActivity, "⚠️ Ошибка сети: ${e.message}", Toast.LENGTH_LONG).show()
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        progressBarMarket.visibility = View.GONE
+                        Toast.makeText(this@MarketActivity, "⚠️ Ошибка сети: ${e.message}", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }
+
+        builder.setNegativeButton("❌ Отмена") { dialog, _ ->
+            dialog.dismiss()
+            // Ничего не делаем — покупка отменена
+        }
+
+        builder.setCancelable(true) // Позволяет закрыть диалог по тапу вне его или кнопке "Назад"
+        builder.show()
     }
 }
 
@@ -202,7 +220,7 @@ class MarketAdapter(
             textViewTitle.text = item.title
             textViewDescription.text = item.description
 
-            val priceText = item.prices?.firstOrNull()?.points_sum?.let { "$it баллов" } ?: "Цена не указана"
+            val priceText = item.prices?.firstOrNull()?.points_sum?.let { "$it Топкоинов" } ?: "Цена не указана"
             textViewPrice.text = priceText
             textViewQuantity.text = "В наличии: ${item.quantity}"
 
