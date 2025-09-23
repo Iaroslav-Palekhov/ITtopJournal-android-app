@@ -24,7 +24,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Логин или email"
+        android:hint="Логин"
         app:hintTextColor="#555555"
         app:boxBackgroundColor="#FFFFFF"
         app:boxStrokeColor="#DDDDDD"
