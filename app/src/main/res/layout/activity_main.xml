@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -46,12 +47,14 @@
             android:id="@+id/buttonToday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="📌 Сегодня"
             android:layout_marginEnd="8dp"
+            android:layout_weight="1"
             android:backgroundTint="#4CAF50"
+            android:text="📌 Сегодня"
+            android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textAllCaps="false" />
+            android:textSize="8dp"
+            tools:ignore="TextSizeCheck" />
 
         <Button
             android:id="@+id/buttonTomorrow"
@@ -125,7 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="📊
-Посещаемость"
+Посещ."
             android:textSize="14sp"
             android:gravity="center"
             android:background="?attr/selectableItemBackground"
