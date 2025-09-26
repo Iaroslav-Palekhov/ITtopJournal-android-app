@@ -142,6 +142,7 @@ class MarketActivity : AppCompatActivity() {
                                 400 -> "❌ Неверный формат запроса. Обратитесь к разработчику."
                                 401 -> "❌ Сессия истекла. Войдите снова."
                                 422 -> "❌ Недостаточно топкоинов."
+                                500 -> "😴 сервер спит"
                                 else -> "❌ Ошибка покупки: ${response.code()}"
                             }
                             Toast.makeText(this@MarketActivity, errorMessage, Toast.LENGTH_LONG).show()
