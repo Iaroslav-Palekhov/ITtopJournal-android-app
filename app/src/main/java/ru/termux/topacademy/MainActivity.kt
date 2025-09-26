@@ -190,6 +190,13 @@ class MainActivity : AppCompatActivity() {
                         response.code() == 401 -> {
                             handleUnauthorized()
                         }
+                        response.code() == 500 -> {
+                            Toast.makeText(
+                                this@MainActivity,
+                                "😴 Сервер спит",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                         else -> {
                             Toast.makeText(
                                 this@MainActivity,
