@@ -40,6 +40,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var buttonMarket: Button
 
+    private lateinit var buttonReviews: Button
+
     private var currentDate: Calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,6 +84,11 @@ class MainActivity : AppCompatActivity() {
 
         buttonMarket.setOnClickListener {
             startActivity(Intent(this, MarketActivity::class.java))
+        }
+
+        buttonReviews = findViewById(R.id.buttonReviews)
+        buttonReviews.setOnClickListener {
+            startActivity(Intent(this, ReviewsActivity::class.java))
         }
 
 //        buttonLogout.setOnClickListener {

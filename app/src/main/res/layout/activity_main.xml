@@ -39,6 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="⏪ Вчера"
+            android:textSize="8dp"
             android:layout_marginEnd="8dp"
             android:textColor="#555555"
             android:textAllCaps="false" />
@@ -63,6 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="⏩ Завтра"
+            android:textSize="8dp"
             android:textColor="#555555"
             android:textAllCaps="false" />
 
@@ -125,24 +127,37 @@
         <Button
             android:id="@+id/buttonAttendance"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
             android:text="📊
 Посещ."
-            android:textSize="14sp"
-            android:gravity="center"
-            android:background="?attr/selectableItemBackground"
             android:textAllCaps="false"
-            android:textColor="#333333" />
+            android:textColor="#333333"
+            android:textSize="10sp" />
+
+
+        <Button
+            android:id="@+id/buttonReviews"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:text="🌟
+Отзывы"
+            android:textAllCaps="false"
+            android:textColor="#333333"
+            android:textSize="10sp" />
 
         <Button
             android:id="@+id/buttonProfile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="👤
-Профиль"
-            android:textSize="14sp"
+            android:text="👤Профиль"
+            android:textSize="10sp"
             android:gravity="center"
             android:background="?attr/selectableItemBackground"
             android:textAllCaps="false"
@@ -156,7 +171,7 @@
             android:layout_weight="1"
             android:text="🛍️
 Маркет"
-            android:textSize="14sp"
+            android:textSize="10sp"
             android:gravity="center"
             android:background="?attr/selectableItemBackground"
             android:textAllCaps="false"
