@@ -1,182 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#F5F5F5">
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
 
-    <!-- Приветствие -->
-    <TextView
-        android:id="@+id/textViewGreeting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="24dp"
-        android:text="Привет, Пользователь!"
-        android:textSize="22sp"
-        android:textColor="#333333"
-        android:fontFamily="sans-serif-medium" />
-
-    <!-- Панель управления датой -->
+    <!-- Основной контент -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="20dp"
-        android:background="#FFFFFF"
-        android:padding="8dp"
-        android:radius="12dp"
-        android:elevation="4dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/buttonYesterday"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="⏪ Вчера"
-            android:textSize="8dp"
-            android:layout_marginEnd="8dp"
-            android:textColor="#555555"
-            android:textAllCaps="false" />
-
-        <Button
-            android:id="@+id/buttonToday"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:backgroundTint="#4CAF50"
-            android:text="📌 Сегодня"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="8dp"
-            tools:ignore="TextSizeCheck" />
-
-        <Button
-            android:id="@+id/buttonTomorrow"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="⏩ Завтра"
-            android:textSize="8dp"
-            android:textColor="#555555"
-            android:textAllCaps="false" />
-
-    </LinearLayout>
-
-    <!-- Заголовок расписания -->
-    <TextView
-        android:id="@+id/textViewScheduleDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="📅 Расписание на сегодня"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#212121"
-        android:layout_marginBottom="12dp"
-        android:layout_gravity="center_horizontal" />
-
-    <!-- Прокручиваемая область расписания -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
-        android:layout_weight="1"
-        android:background="#FFFFFF"
-        android:clipToPadding="false"
-        android:contentDescription="@string/app_name"
-        android:elevation="2dp"
-        android:padding="12dp">
-
-        <LinearLayout
-            android:id="@+id/linearLayoutSchedule"
+        <!-- Тулбар -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/topAppBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp">
-            <!-- Расписание будет добавляться сюда динамически -->
-        </LinearLayout>
+            android:layout_height="?attr/actionBarSize"
+            android:background="#4CAF50"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:navigationIcon="@drawable/ic_menu_white"
+            app:title="Главная"
+            app:titleTextColor="@android:color/white" />
 
-    </ScrollView>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
 
-    <!-- Индикатор загрузки -->
-    <ProgressBar
-        android:id="@+id/progressBarMain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:layout_marginBottom="16dp"
-        android:indeterminateTint="#4CAF50" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    <!-- Нижняя панель навигации — НАСТОЯЩИЕ КНОПКИ с эмодзи и подписями -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#FFFFFF"
-        android:elevation="8dp"
-        android:padding="12dp">
+                <!-- Приветствие -->
+                <TextView
+                    android:id="@+id/textViewGreeting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="Привет, Пользователь!"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="?android:attr/textColorPrimary" />
 
-        <Button
-            android:id="@+id/buttonAttendance"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:background="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:text="📊
-Посещ."
-            android:textAllCaps="false"
-            android:textColor="#333333"
-            android:textSize="10sp" />
+                <!-- Навигация по дням -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="20dp">
 
+                    <Button
+                        android:id="@+id/buttonYesterday"
+                        android:layout_width="0dp"
+                        android:layout_height="42dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        android:text="Вчера"
+                        android:textAllCaps="false"
+                        android:textSize="13sp"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:background="@drawable/button_outline" />
 
-        <Button
-            android:id="@+id/buttonReviews"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:background="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:text="🌟
-Отзывы"
-            android:textAllCaps="false"
-            android:textColor="#333333"
-            android:textSize="10sp" />
+                    <Button
+                        android:id="@+id/buttonToday"
+                        android:layout_width="0dp"
+                        android:layout_height="42dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        android:text="Сегодня"
+                        android:textAllCaps="false"
+                        android:textSize="13sp"
+                        android:textColor="#FFFFFF"
+                        android:background="@drawable/button_bg" />
 
-        <Button
-            android:id="@+id/buttonProfile"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="👤Профиль"
-            android:textSize="10sp"
-            android:gravity="center"
-            android:background="?attr/selectableItemBackground"
-            android:textAllCaps="false"
-            android:textColor="#333333" />
+                    <Button
+                        android:id="@+id/buttonTomorrow"
+                        android:layout_width="0dp"
+                        android:layout_height="42dp"
+                        android:layout_weight="1"
+                        android:text="Завтра"
+                        android:textAllCaps="false"
+                        android:textSize="13sp"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:background="@drawable/button_outline" />
 
+                </LinearLayout>
 
-        <Button
-            android:id="@+id/buttonMarket"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="🛍️
-Маркет"
-            android:textSize="10sp"
-            android:gravity="center"
-            android:background="?attr/selectableItemBackground"
-            android:textAllCaps="false"
-            android:textColor="#333333" />
+                <!-- Заголовок расписания -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="10dp">
 
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_calendar"
+                        android:colorFilter="#4CAF50"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="Календарь" />
+
+                    <TextView
+                        android:id="@+id/textViewScheduleDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Расписание на сегодня"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:textColor="?android:attr/textColorPrimary" />
+
+                </LinearLayout>
+
+                <!-- Карточка расписания -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/card_bg"
+                    android:padding="12dp"
+                    android:layout_marginBottom="16dp">
+
+                    <LinearLayout
+                        android:id="@+id/linearLayoutSchedule"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:minHeight="48dp" />
+
+                </LinearLayout>
+
+                <!-- Прогресс -->
+                <ProgressBar
+                    android:id="@+id/progressBarMain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:layout_marginBottom="16dp" />
+
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
-</LinearLayout>
+    <!-- Боковое меню -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/navigation_menu" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

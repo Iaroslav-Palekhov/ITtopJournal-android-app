@@ -2,4 +2,28 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Бренд -->
+    <color name="green">#4CAF50</color>
+    <color name="green_dark">#388E3C</color>
+    <color name="green_light">#E8F5E9</color>
+    <color name="red">#E53935</color>
+
+    <!-- Светлая тема -->
+    <color name="bg_light">#F5F5F5</color>
+    <color name="surface_light">#FFFFFF</color>
+    <color name="border_light">#E0E0E0</color>
+    <color name="text_primary_light">#212121</color>
+    <color name="text_secondary_light">#757575</color>
+    <color name="hint_light">#9E9E9E</color>
+    <color name="divider_light">#EEEEEE</color>
+
+    <!-- Тёмная тема -->
+    <color name="bg_dark">#121212</color>
+    <color name="surface_dark">#1E1E1E</color>
+    <color name="border_dark">#333333</color>
+    <color name="text_primary_dark">#EEEEEE</color>
+    <color name="text_secondary_dark">#9E9E9E</color>
+    <color name="hint_dark">#666666</color>
+    <color name="divider_dark">#2A2A2A</color>
 </resources>

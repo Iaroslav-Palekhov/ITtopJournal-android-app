@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="Главная" />
+
+        <item
+            android:id="@+id/nav_attendance"
+            android:icon="@drawable/ic_attendance"
+            android:title="Посещаемость" />
+
+        <item
+            android:id="@+id/nav_reviews"
+            android:icon="@drawable/ic_star"
+            android:title="Отзывы" />
+
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_profile"
+            android:title="Профиль" />
+
+        <item
+            android:id="@+id/nav_homework"
+            android:icon="@drawable/ic_book"
+            android:title="Домашние задания" />
+
+        <item
+            android:id="@+id/nav_market"
+            android:icon="@drawable/ic_store"
+            android:title="Маркет" />
+
+    </group>
+
+    <item android:title="Другое">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings"
+                android:title="Настройки" />
+
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_logout"
+                android:title="Выйти" />
+        </menu>
+    </item>
+
+</menu>

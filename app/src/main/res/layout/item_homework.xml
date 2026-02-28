@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/homework_item_bg"
+    android:padding="14dp"
+    android:layout_marginBottom="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- Предмет -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="5dp">
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/ic_book"
+            android:colorFilter="#4CAF50"
+            android:layout_marginRight="7dp"
+            android:contentDescription="Предмет" />
+
+        <TextView
+            android:id="@+id/textSubject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Предмет"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="?android:attr/textColorPrimary" />
+
+    </LinearLayout>
+
+    <!-- Тема -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="4dp">
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_note"
+            android:colorFilter="#9E9E9E"
+            android:layout_marginRight="7dp"
+            android:contentDescription="Тема" />
+
+        <TextView
+            android:id="@+id/textTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Тема"
+            android:textSize="13sp"
+            android:textColor="?android:attr/textColorSecondary" />
+
+    </LinearLayout>
+
+    <!-- Преподаватель -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="4dp">
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_teacher"
+            android:colorFilter="#9E9E9E"
+            android:layout_marginRight="7dp"
+            android:contentDescription="Преподаватель" />
+
+        <TextView
+            android:id="@+id/textTeacher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Преподаватель"
+            android:textSize="13sp"
+            android:textColor="?android:attr/textColorSecondary" />
+
+    </LinearLayout>
+
+    <!-- Даты -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="10dp">
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_calendar"
+            android:colorFilter="#9E9E9E"
+            android:layout_marginRight="7dp"
+            android:contentDescription="Даты" />
+
+        <TextView
+            android:id="@+id/textDates"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Даты"
+            android:textSize="13sp"
+            android:textColor="?android:attr/textColorSecondary" />
+
+    </LinearLayout>
+
+    <!-- Разделитель -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EEEEEE"
+        android:layout_marginBottom="10dp" />
+
+    <!-- Статус и оценка -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:id="@+id/textStatus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Статус"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_star"
+            android:colorFilter="#4CAF50"
+            android:layout_marginRight="4dp"
+            android:contentDescription="Оценка" />
+
+        <TextView
+            android:id="@+id/textMark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Оценка"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#4CAF50" />
+
+    </LinearLayout>
+
+    <!-- Кнопки действий -->
+    <LinearLayout
+        android:id="@+id/buttonsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonDownloadTask"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:layout_marginRight="4dp"
+            android:text="Задание"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:textColor="#4CAF50"
+            android:background="@drawable/button_outline" />
+
+        <Button
+            android:id="@+id/buttonDownloadSolution"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:layout_marginRight="4dp"
+            android:text="Решение"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:textColor="#4CAF50"
+            android:background="@drawable/button_outline" />
+
+        <Button
+            android:id="@+id/buttonSubmit"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:text="Сдать"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_bg" />
+
+    </LinearLayout>
+
+</LinearLayout>
