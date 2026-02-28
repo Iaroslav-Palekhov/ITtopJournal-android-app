@@ -11,23 +11,44 @@ object ApiClient {
 
     private const val BASE_URL = "https://msapi.top-academy.ru/api/v2/"
 
-    fun provideRetrofit(sharedPrefs: SharedPreferencesHelper): Retrofit {
+    // Общие заголовки для всех запросов
+    private val commonHeaders = mapOf(
+        "User-Agent" to "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:142.0) Gecko/20100101 Firefox/142.0",
+        "Accept" to "application/json, text/plain, */*",
+        "Accept-Language" to "ru_RU, ru",
+        "Sec-GPC" to "1",
+        "Sec-Fetch-Dest" to "empty",
+        "Sec-Fetch-Mode" to "cors",
+        "Sec-Fetch-Site" to "same-site",
+        "Referer" to "https://journal.top-academy.ru/"
+    )
+
+    private fun createHttpClient(interceptors: List<Interceptor>): OkHttpClient {
+        val builder = OkHttpClient.Builder()
+
+        // Добавляем логирование
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
+        builder.addInterceptor(loggingInterceptor)
 
+        // Добавляем все переданные интерцепторы
+        interceptors.forEach { builder.addInterceptor(it) }
+
+        return builder.build()
+    }
+
+    fun provideRetrofit(sharedPrefs: SharedPreferencesHelper): Retrofit {
         val authInterceptor = Interceptor { chain ->
             val original = chain.request()
             val requestBuilder = original.newBuilder()
-                .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:142.0) Gecko/20100101 Firefox/142.0")
-                .header("Accept", "application/json, text/plain, */*")
-                .header("Accept-Language", "ru_RU, ru")
-                .header("Sec-GPC", "1")
-                .header("Sec-Fetch-Dest", "empty")
-                .header("Sec-Fetch-Mode", "cors")
-                .header("Sec-Fetch-Site", "same-site")
-                .header("Referer", "https://journal.top-academy.ru/")
 
+            // Добавляем общие заголовки
+            commonHeaders.forEach { (key, value) ->
+                requestBuilder.header(key, value)
+            }
+
+            // Добавляем авторизацию если есть токен
             val token = sharedPrefs.accessToken
             if (!token.isNullOrEmpty()) {
                 requestBuilder.header("Authorization", "Bearer $token")
@@ -39,10 +60,34 @@ object ApiClient {
             chain.proceed(request)
         }
 
-        val client = OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
-            .addInterceptor(authInterceptor)
+        val client = createHttpClient(listOf(authInterceptor))
+
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    fun provideRetrofitWithoutToken(): Retrofit {
+        val commonHeadersInterceptor = Interceptor { chain ->
+            val original = chain.request()
+            val requestBuilder = original.newBuilder()
+
+            // Добавляем общие заголовки
+            commonHeaders.forEach { (key, value) ->
+                requestBuilder.header(key, value)
+            }
+
+            // Для логина Content-Type должен быть application/json
+            requestBuilder.header("Content-Type", "application/json")
+
+            // Не добавляем Authorization заголовок
+            val request = requestBuilder.build()
+            chain.proceed(request)
+        }
+
+        val client = createHttpClient(listOf(commonHeadersInterceptor))
 
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
