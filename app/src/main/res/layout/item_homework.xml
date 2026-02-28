@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -22,11 +22,11 @@
         android:layout_marginBottom="5dp">
 
         <ImageView
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:src="@drawable/ic_book"
-            android:colorFilter="#4CAF50"
-            android:layout_marginRight="7dp"
+            app:tint="#4CAF50"
+            android:layout_marginEnd="8dp"
             android:contentDescription="Предмет" />
 
         <TextView
@@ -52,8 +52,8 @@
             android:layout_width="14dp"
             android:layout_height="14dp"
             android:src="@drawable/ic_note"
-            android:colorFilter="#9E9E9E"
-            android:layout_marginRight="7dp"
+            app:tint="#9E9E9E"
+            android:layout_marginEnd="7dp"
             android:contentDescription="Тема" />
 
         <TextView
@@ -78,8 +78,8 @@
             android:layout_width="14dp"
             android:layout_height="14dp"
             android:src="@drawable/ic_teacher"
-            android:colorFilter="#9E9E9E"
-            android:layout_marginRight="7dp"
+            app:tint="#9E9E9E"
+            android:layout_marginEnd="7dp"
             android:contentDescription="Преподаватель" />
 
         <TextView
@@ -104,8 +104,8 @@
             android:layout_width="14dp"
             android:layout_height="14dp"
             android:src="@drawable/ic_calendar"
-            android:colorFilter="#9E9E9E"
-            android:layout_marginRight="7dp"
+            app:tint="#9E9E9E"
+            android:layout_marginEnd="7dp"
             android:contentDescription="Даты" />
 
         <TextView
@@ -147,8 +147,8 @@
             android:layout_width="14dp"
             android:layout_height="14dp"
             android:src="@drawable/ic_star"
-            android:colorFilter="#4CAF50"
-            android:layout_marginRight="4dp"
+            app:tint="#4CAF50"
+            android:layout_marginEnd="4dp"
             android:contentDescription="Оценка" />
 
         <TextView
@@ -174,7 +174,7 @@
             android:layout_width="0dp"
             android:layout_height="38dp"
             android:layout_weight="1"
-            android:layout_marginRight="4dp"
+            android:layout_marginEnd="4dp"
             android:text="Задание"
             android:textAllCaps="false"
             android:textSize="12sp"
@@ -186,7 +186,7 @@
             android:layout_width="0dp"
             android:layout_height="38dp"
             android:layout_weight="1"
-            android:layout_marginRight="4dp"
+            android:layout_marginEnd="4dp"
             android:text="Решение"
             android:textAllCaps="false"
             android:textSize="12sp"

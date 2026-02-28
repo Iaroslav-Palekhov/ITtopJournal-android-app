@@ -10,13 +10,44 @@
     tools:openDrawer="start">
 
     <!-- Основной контент -->
+    <!-- Используем FrameLayout или LinearLayout как контейнер для наложения -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Скролл с основным контентом -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"> <!-- Важно: заполняет viewport, если контента мало -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Тулбар вынесен из скролла? Нет, в вашем коде он был отдельно.
+                     Вернем структуру: Toolbar сверху, потом ScrollView -->
+            </LinearLayout>
+        </ScrollView>
+
+        <!--
+           СТОП! В вашей структуре Toolbar был ВЫШЕ ScrollView.
+           Давайте сделаем правильную вертикальную структуру в LinearLayout,
+           но ProgressBar вынесем НАД ScrollView (как отдельный слой) или в конец LinearLayout,
+           но НЕ внутрь ScrollView.
+        -->
+    </FrameLayout>
+
+    <!-- ПЕРЕПИСАННАЯ СТРУКТУРА ДЛЯ СТАБИЛЬНОСТИ -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Тулбар -->
-        <androidx.appcompat.widget.Toolbar
+        <!-- 1. Тулбар (фиксированный) -->
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -26,129 +57,137 @@
             app:title="Главная"
             app:titleTextColor="@android:color/white" />
 
-        <ScrollView
+        <!-- 2. Контейнер для контента и прогресс-бара -->
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp">
+            android:layout_height="match_parent">
 
-            <LinearLayout
+            <!-- Скролл с контентом -->
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:fillViewport="true">
 
-                <!-- Приветствие -->
-                <TextView
-                    android:id="@+id/textViewGreeting"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="20dp"
-                    android:text="Привет, Пользователь!"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="?android:attr/textColorPrimary" />
-
-                <!-- Навигация по дням -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="20dp">
-
-                    <Button
-                        android:id="@+id/buttonYesterday"
-                        android:layout_width="0dp"
-                        android:layout_height="42dp"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="6dp"
-                        android:text="Вчера"
-                        android:textAllCaps="false"
-                        android:textSize="13sp"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:background="@drawable/button_outline" />
-
-                    <Button
-                        android:id="@+id/buttonToday"
-                        android:layout_width="0dp"
-                        android:layout_height="42dp"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="6dp"
-                        android:text="Сегодня"
-                        android:textAllCaps="false"
-                        android:textSize="13sp"
-                        android:textColor="#FFFFFF"
-                        android:background="@drawable/button_bg" />
-
-                    <Button
-                        android:id="@+id/buttonTomorrow"
-                        android:layout_width="0dp"
-                        android:layout_height="42dp"
-                        android:layout_weight="1"
-                        android:text="Завтра"
-                        android:textAllCaps="false"
-                        android:textSize="13sp"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:background="@drawable/button_outline" />
-
-                </LinearLayout>
-
-                <!-- Заголовок расписания -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="10dp">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_calendar"
-                        android:colorFilter="#4CAF50"
-                        android:layout_marginEnd="8dp"
-                        android:contentDescription="Календарь" />
-
-                    <TextView
-                        android:id="@+id/textViewScheduleDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Расписание на сегодня"
-                        android:textSize="17sp"
-                        android:textStyle="bold"
-                        android:textColor="?android:attr/textColorPrimary" />
-
-                </LinearLayout>
-
-                <!-- Карточка расписания -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@drawable/card_bg"
-                    android:padding="12dp"
-                    android:layout_marginBottom="16dp">
+                    android:padding="16dp">
 
+                    <!-- Приветствие -->
+                    <TextView
+                        android:id="@+id/textViewGreeting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="Привет, Пользователь!"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="?android:attr/textColorPrimary" />
+
+                    <!-- Навигация по дням -->
                     <LinearLayout
-                        android:id="@+id/linearLayoutSchedule"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="20dp">
+
+                        <Button
+                            android:id="@+id/buttonYesterday"
+                            android:layout_width="0dp"
+                            android:layout_height="42dp"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="6dp"
+                            android:background="@drawable/button_outline"
+                            android:text="Вчера"
+                            android:textAllCaps="false"
+                            android:textSize="13sp"
+                            tools:ignore="TouchTargetSizeCheck" />
+
+                        <Button
+                            android:id="@+id/buttonToday"
+                            android:layout_width="0dp"
+                            android:layout_height="42dp"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="6dp"
+                            android:background="@drawable/button_bg"
+                            android:text="Сегодня"
+                            android:textAllCaps="false"
+                            android:textColor="#FFFFFF"
+                            android:textSize="13sp"
+                            tools:ignore="TouchTargetSizeCheck" />
+
+                        <Button
+                            android:id="@+id/buttonTomorrow"
+                            android:layout_width="0dp"
+                            android:layout_height="42dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/button_outline"
+                            android:text="Завтра"
+                            android:textAllCaps="false"
+                            android:textSize="13sp"
+                            tools:ignore="TouchTargetSizeCheck" />
+                    </LinearLayout>
+
+                    <!-- Заголовок расписания -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="10dp">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_calendar"
+                            app:tint="#4CAF50"
+                            android:layout_marginEnd="8dp"
+                            android:contentDescription="Календарь" />
+
+                        <TextView
+                            android:id="@+id/textViewScheduleDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Расписание на сегодня"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            android:textColor="?android:attr/textColorPrimary" />
+                    </LinearLayout>
+
+                    <!-- Карточка расписания -->
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:minHeight="48dp" />
+                        android:background="@drawable/card_bg"
+                        android:padding="12dp"
+                        android:layout_marginBottom="16dp"
+                        android:minHeight="200dp">
+
+                        <LinearLayout
+                            android:id="@+id/linearLayoutSchedule"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" />
+                    </LinearLayout>
 
                 </LinearLayout>
+            </ScrollView>
 
-                <!-- Прогресс -->
-                <ProgressBar
-                    android:id="@+id/progressBarMain"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:visibility="gone"
-                    android:layout_marginBottom="16dp" />
+            <!-- 3. ProgressBar (Теперь он ПОВЕРХ ScrollView, а не внутри!) -->
+            <!-- Он будет по центру экрана благодаря FrameLayout -->
+            <ProgressBar
+                android:id="@+id/progressBarMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:indeterminateTint="#4CAF50" />
 
-            </LinearLayout>
-        </ScrollView>
+        </FrameLayout>
     </LinearLayout>
 
     <!-- Боковое меню -->

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -36,8 +36,8 @@
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:src="@drawable/ic_profile"
-                android:colorFilter="#4CAF50"
-                android:layout_marginRight="8dp"
+                app:tint="#4CAF50"
+                android:layout_marginEnd="8dp"
                 android:contentDescription="Профиль" />
 
             <TextView
@@ -68,7 +68,7 @@
                 android:textColor="?android:attr/textColorPrimary"
                 android:layout_marginBottom="10dp" />
 
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginBottom="10dp"/>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginBottom="10dp" />
 
             <TextView
                 android:id="@+id/textViewEmail"
@@ -79,7 +79,7 @@
                 android:textColor="?android:attr/textColorPrimary"
                 android:layout_marginBottom="10dp" />
 
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginBottom="10dp"/>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginBottom="10dp" />
 
             <TextView
                 android:id="@+id/textViewBirthDate"
@@ -90,7 +90,7 @@
                 android:textColor="?android:attr/textColorPrimary"
                 android:layout_marginBottom="10dp" />
 
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginBottom="10dp"/>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginBottom="10dp" />
 
             <TextView
                 android:id="@+id/textViewAddress"
@@ -101,7 +101,7 @@
                 android:textColor="?android:attr/textColorPrimary"
                 android:layout_marginBottom="10dp" />
 
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginBottom="10dp"/>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginBottom="10dp" />
 
             <TextView
                 android:id="@+id/textViewStudy"
@@ -112,7 +112,7 @@
                 android:textColor="?android:attr/textColorPrimary"
                 android:layout_marginBottom="10dp" />
 
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginBottom="10dp"/>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginBottom="10dp" />
 
             <TextView
                 android:id="@+id/textViewPhones"
@@ -123,7 +123,7 @@
                 android:textColor="?android:attr/textColorPrimary"
                 android:layout_marginBottom="10dp" />
 
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginBottom="10dp"/>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F0F0" android:layout_marginBottom="10dp" />
 
             <TextView
                 android:id="@+id/textViewSocials"
@@ -160,12 +160,12 @@
             <Button
                 android:id="@+id/buttonLogout"
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
+                android:layout_height="48dp"
+                android:background="@drawable/button_outline"
                 android:text="Выйти из аккаунта"
                 android:textAllCaps="false"
-                android:textSize="14sp"
                 android:textColor="?android:attr/textColorPrimary"
-                android:background="@drawable/button_outline" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
